@@ -1,5 +1,39 @@
-<div id="<%= dom_id(game, :scoreboard) %>" class="my-6 p-4 bg-gray-800 text-white rounded-lg shadow-lg flex justify-around items-center">
-  <span class="text-2xl font-bold"><%= game.players.first.team_name %></span>
-  <span class="text-4xl font-mono"><%= game.score_team_a %> x <%= game.score_team_b %></span>
-  <span class="text-2xl font-bold"><%= game.players.second.team_name %></span>
+<div id="<%= dom_id(game, :scoreboard) %>" class="card bg-gradient-to-r from-primary to-secondary text-primary-content shadow-xl">
+  <div class="card-body py-4 sm:py-6">
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+      <!-- Time A -->
+      <div class="flex-1 text-center">
+        <div class="avatar placeholder mb-2">
+          <div class="bg-primary-content text-primary rounded-full w-10 h-10 sm:w-12 sm:h-12">
+            <span class="text-lg sm:text-xl font-bold">1</span>
+          </div>
+        </div>
+        <h3 class="text-sm sm:text-lg font-bold truncate"><%= game.players.find_by(player_number: 1)&.team_name || "Time 1" %></h3>
+        <p class="text-xs sm:text-sm opacity-75 hidden sm:block"><%= game.players.find_by(player_number: 1)&.name || "Jogador 1" %></p>
+      </div>
+
+      <!-- Placar Central -->
+      <div class="flex-none mx-4 sm:mx-8">
+        <div class="text-center">
+          <div class="text-4xl sm:text-6xl font-mono font-black">
+            <%= game.score_team_a %> 
+            <span class="text-2xl sm:text-4xl opacity-75">×</span> 
+            <%= game.score_team_b %>
+          </div>
+          <div class="text-xs sm:text-sm opacity-75 mt-1">PLACAR</div>
+        </div>
+      </div>
+
+      <!-- Time B -->
+      <div class="flex-1 text-center">
+        <div class="avatar placeholder mb-2">
+          <div class="bg-primary-content text-primary rounded-full w-10 h-10 sm:w-12 sm:h-12">
+            <span class="text-lg sm:text-xl font-bold">2</span>
+          </div>
+        </div>
+        <h3 class="text-sm sm:text-lg font-bold truncate"><%= game.players.find_by(player_number: 2)&.team_name || "Time 2" %></h3>
+        <p class="text-xs sm:text-sm opacity-75 hidden sm:block"><%= game.players.find_by(player_number: 2)&.name || "Jogador 2" %></p>
+      </div>
+    </div>
+  </div>
 </div>

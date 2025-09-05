@@ -1,3 +1,23 @@
-<div id="<%= dom_id game_event %>" class="py-2">
-  <p><span class="font-bold"><%= game_event.minute %>':</span> <%= game_event.description %></p>
+<div id="<%= dom_id game_event %>" class="flex items-start gap-3 p-4 hover:bg-base-200/50 border-b border-base-200/50">
+  <!-- Timeline indicator -->
+  <div class="flex-none">
+    <div class="badge badge-primary badge-sm"><%= game_event.minute %>'</div>
+  </div>
+  
+  <!-- Event content -->
+  <div class="flex-1">
+    <div class="flex items-center gap-2">
+      <% icon = case game_event.description.downcase
+          when /gol/, /goal/ then "⚽"
+          when /cartão amarelo/, /yellow/ then "🟡"
+          when /cartão vermelho/, /red/ then "🟥"
+          when /substituição/, /substitution/ then "🔄"
+          when /início/, /start/ then "🚀"
+          when /fim/, /end/ then "🏁"
+          else "📝"
+          end %>
+      <span class="text-sm"><%= icon %></span>
+      <p class="text-sm"><%= game_event.description %></p>
+    </div>
+  </div>
 </div>

@@ -2,14 +2,26 @@
 <%= turbo_stream_from @game %>
 
 <div class="w-full max-w-6xl mx-auto">
-
   <div id="<%= dom_id(@game, :content) %>">
     <%= render 'games/content', game: @game %>
   </div>
 
-  <div class="mt-8 text-center">
+  <!-- Ações da partida -->
+  <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
     <% if @game.status != "em_andamento" && current_player && @game.players.include?(current_player) %>
-      <%= button_to "Voltar ao Lobby", player_path(current_player), method: :delete, class: "rounded-md px-5 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium" %>
+      <%= button_to player_path(current_player), { method: :delete }, { class: "btn btn-outline btn-lg" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Voltar ao Lobby
+      <% end %>
+    <% else %>
+      <%= link_to games_path, class: "btn btn-outline" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        Ver Outras Partidas
+      <% end %>
     <% end %>
   </div>
 </div>

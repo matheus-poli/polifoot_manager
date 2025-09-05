@@ -1,25 +1,83 @@
 <% if game.status == "em_andamento" %>
   <%# --- TELA DA PARTIDA EM ANDAMENTO --- %>
-  <div id="match_screen">
-    <h1 class="font-bold text-4xl text-center mb-4">Partida #<%= game.id %></h1>
+  <div id="match_screen" class="space-y-6">
+    <!-- Header da partida -->
+    <div class="text-center">
+      <div class="badge badge-success badge-lg mb-2">Partida em Andamento</div>
+      <h1 class="text-2xl lg:text-4xl font-bold text-base-content">⚽ Partida #<%= game.id %></h1>
+    </div>
     
     <%# Placar %>
     <%= render 'games/scoreboard', game: game %>
 
     <%# Log de Eventos %>
-    <div id="game_events" class="h-96 overflow-y-scroll bg-white p-4 border rounded-lg shadow-inner">
-      <%= render game.game_events.order(:minute) %>
+    <div class="card bg-base-100 shadow-lg">
+      <div class="card-header">
+        <h2 class="card-title">📝 Eventos da Partida</h2>
+      </div>
+      <div class="card-body p-0">
+        <div id="game_events" class="h-96 overflow-y-auto bg-base-200/50">
+          <% if game.game_events.any? %>
+            <%= render game.game_events.order(:minute) %>
+          <% else %>
+            <div class="flex items-center justify-center h-full text-base-content/60">
+              <div class="text-center">
+                <div class="text-3xl mb-2">⏱️</div>
+                <p>Aguardando eventos da partida...</p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 
 <% else %>
   <%# --- TELA DE PREPARAÇÃO (SALA) --- %>
-  <div id="lobby_screen">
-    <h1 class="font-bold text-4xl text-center mb-4">Sala da Partida #<%= game.id %></h1>
-    <p class="text-center text-xl text-gray-600 mb-8">Status: <span class="font-semibold"><%= game.status %></span></p>
+  <div id="lobby_screen" class="space-y-6">
+    <!-- Header da sala -->
+    <div class="text-center">
+      <div class="badge badge-warning badge-lg mb-2">Preparação</div>
+      <h1 class="text-2xl lg:text-4xl font-bold text-base-content">🎮 Sala da Partida #<%= game.id %></h1>
+      <p class="text-base-content/70 mt-2">Status: 
+        <span class="badge <%= game.status == 'aguardando' ? 'badge-warning' : game.status == 'sala_cheia' ? 'badge-info' : 'badge-success' %>">
+          <%= game.status.humanize %>
+        </span>
+      </p>
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <%= render game.players.order(:created_at) %>
+    <!-- Instruções -->
+    <div class="alert alert-info">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div>
+        <h3 class="font-bold">Como jogar:</h3>
+        <div class="text-sm">
+          1. Personalize seu nome • 2. Escolha sua tática • 3. Clique em "Estou Pronto" • 4. Aguarde o oponente
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid dos jogadores -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <%= render game.players.order(:player_number) %>
+      
+      <!-- Slot vazio se necessário -->
+      <% if game.players.count < 2 %>
+        <div class="card bg-base-200 border-2 border-dashed border-base-300">
+          <div class="card-body items-center justify-center text-center py-12">
+            <div class="text-4xl mb-4 opacity-50">👤</div>
+            <h3 class="text-xl font-bold text-base-content/60">Aguardando Jogador</h3>
+            <p class="text-base-content/50 mt-2">
+              Compartilhe o link da partida ou aguarde alguém entrar pelo lobby
+            </p>
+            <div class="mt-4">
+              <div class="badge badge-outline">Slot <%= game.players.count + 1 %> vazio</div>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 <% end %>

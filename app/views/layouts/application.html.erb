@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="forest">
   <head>
     <title><%= content_for(:title) || "Polifoot Manager" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -17,13 +17,50 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%# TailwindCSS + DaisyUI via CDN %>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <%# Includes our custom styles %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="min-h-screen bg-base-100">
+    <!-- Navbar -->
+    <div class="navbar bg-base-200 shadow-lg">
+      <div class="flex-1">
+        <%= link_to root_path, class: "btn btn-ghost text-xl font-bold" do %>
+          ⚽ Polifoot Manager
+        <% end %>
+      </div>
+      <div class="flex-none">
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <div class="indicator">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <% if notice %>
+        <div class="alert alert-success mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span><%= notice %></span>
+        </div>
+      <% end %>
+      
+      <% if alert %>
+        <div class="alert alert-error mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span><%= alert %></span>
+        </div>
+      <% end %>
+
       <%= yield %>
     </main>
   </body>
