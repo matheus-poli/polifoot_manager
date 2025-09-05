@@ -49,6 +49,10 @@ Rails.application.configure do
   # Replace the default in-process and non-durable queuing backend for Active Job.
   config.active_job.queue_adapter = :solid_queue
 
+  # Configure solid gems to use the primary database (not separate databases)
+  config.solid_cache.connects_to = nil
+  config.solid_queue.connects_to = nil
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
