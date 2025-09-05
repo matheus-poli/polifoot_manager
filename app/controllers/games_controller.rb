@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   # GET /games
   def index
-    @games = Game.includes(:players).order(created_at: :desc)
+    @games = Game.includes(:players).where(status: [ "aguardando" ]).order(created_at: :desc)
   end
 
   # GET /games/1

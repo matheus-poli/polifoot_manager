@@ -19,13 +19,6 @@
         <div id="game_events" class="h-96 overflow-y-auto bg-base-200/50">
           <% if game.game_events.any? %>
             <%= render game.game_events.order(:minute) %>
-          <% else %>
-            <div class="flex items-center justify-center h-full text-base-content/60">
-              <div class="text-center">
-                <div class="text-3xl mb-2">⏱️</div>
-                <p>Aguardando eventos da partida...</p>
-              </div>
-            </div>
           <% end %>
         </div>
       </div>
