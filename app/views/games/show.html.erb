@@ -1,7 +1,12 @@
 <% content_for :title, "Partida #{@game.id}" %>
 <%= turbo_stream_from @game %>
 
-<div class="w-full max-w-6xl mx-auto">
+<!-- Audio element for goal sound -->
+<audio id="goal-audio" preload="auto">
+  <source src="<%= asset_path('goal.mp3') %>" type="audio/mpeg">
+</audio>
+
+<div class="w-full max-w-6xl mx-auto" data-controller="goal-audio">
   <div id="<%= dom_id(@game, :content) %>">
     <%= render 'games/content', game: @game %>
   </div>

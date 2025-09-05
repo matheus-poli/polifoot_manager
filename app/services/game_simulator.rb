@@ -213,6 +213,9 @@ class GameSimulator
       @game.save
       @game.broadcast_replace_to(@game, target: ActionView::RecordIdentifier.dom_id(@game, :scoreboard), partial: "games/scoreboard", locals: { game: @game })
 
+      # Broadcast goal audio event
+      @game.broadcast_action_to(@game, action: :goal_audio)
+
       create_event(minute, generate_event_text(:goal, @teams[@possession], defender_team, shooter))
 
       @possession = defender_team[:manager].id
