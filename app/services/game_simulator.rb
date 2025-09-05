@@ -57,7 +57,7 @@ class GameSimulator
       "Bomba de fora da área! A bola passa perto!",
       "[Jogador] recebe dentro da área, girou e bateu!",
       "Chute colocado buscando o ângulo!",
-      "A bola desvia na zaga e quase engana o goleiro!",
+      "A bola desvia na zaga e quase engana o [Goleiro]!",
       "Bateu de primeira! Que perigo!",
       "A bola passou raspando a trave!",
       "O chute explode no peito do zagueiro!"
@@ -74,8 +74,8 @@ class GameSimulator
     save: [
       "DEFENDEU O GOLEIRO!",
       "QUE MILAGRE! Uma defesa espetacular de [Goleiro]!",
-      "O goleiro sai do gol com segurança e fica com a bola.",
-      "ESPALMA PRA ESCANTEIO! O goleiro evita o gol.",
+      "O [Goleiro] sai do gol com segurança e fica com a bola.",
+      "ESPALMA PRA ESCANTEIO! O [Goleiro] evita o gol.",
       "Defesa tranquila, sem dar rebote."
     ],
     random: [
@@ -86,7 +86,7 @@ class GameSimulator
       "Alerta de Irrigação! Os sprinklers do gramado ligam sozinhos no meio do ataque e dão um banho em todo mundo!",
       "Invasor Inusitado! Um cachorro invade o campo, dribla o zagueiro com uma série de fintas e sai com a bola nos dentes.",
       "VAR Misterioso! O árbitro vai ao VAR checar um lance e a tela acidentalmente exibe a receita de um bolo de fubá por 15 segundos.",
-      "Delivery Aéreo! Um drone de delivery de comida sobrevoa a pequena área e quase derruba um lanche na cabeça do goleiro.",
+      "Delivery Aéreo! Um drone de delivery de comida sobrevoa a pequena área e quase derruba um lanche na cabeça do [Goleiro].",
       "Crise Existencial! [Jogador] para com a bola no pé, olha para o céu e parece questionar o sentido da vida. Ele perde a posse.",
       "Momento TikTok! Do nada, [Jogador] começa a ensaiar uma dancinha viral no círculo central. Ninguém entendeu o motivo.",
       "Pausa para o Lanche! O vendedor de pipoca se distrai, entra em campo e oferece seus produtos aos jogadores no meio da partida.",
@@ -94,7 +94,7 @@ class GameSimulator
       "Problema de Calçado! [Jogador] perde a chuteira, mas continua a jogada e, sem querer, dá um passe perfeito usando apenas a meia.",
       "Trilha Sonora Trocada! O sistema de som do estádio toca \"Baby Shark\" em volume máximo por 30 segundos, confundindo todos os atletas.",
       "O Árbitro Poeta! Em vez de dar cartão, o juiz chama [Jogador] para um canto e declama um haicai sobre fair-play.",
-      "Visitante Alado! Um pombo pousa no travessão e se recusa a sair, atrapalhando a visão do goleiro em um momento crucial do jogo."
+      "Visitante Alado! Um pombo pousa no travessão e se recusa a sair, atrapalhando a visão do [Goleiro] em um momento crucial do jogo."
     ]
   }
 
