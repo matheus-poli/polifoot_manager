@@ -64,7 +64,7 @@ class GameSimulator
     ],
     goal: [
       "GOOOOOOOOOOOOOOOOL!",
-      "É DO [TIME]! A torcida vai à loucura!",
+      "É DO [Time]! A torcida vai à loucura!",
       "[Jogador] abre o placar no [Estádio]!",
       "Que golaço! A bola foi no ângulo!",
       "Gol de cabeça! [Jogador] sobe no terceiro andar!",

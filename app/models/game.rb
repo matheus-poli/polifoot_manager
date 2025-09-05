@@ -11,14 +11,20 @@ class Game < ApplicationRecord
 
   def player_number_for_user(user_token)
     return 1 if players.empty?
-    
+
     existing_player = players.find_by(user_token: user_token)
     return existing_player.player_number if existing_player&.player_number
-    
-    # Determinar número baseado no user_token para consistência
-    # Coleta todos os tokens existentes incluindo o novo
-    all_user_tokens = (players.pluck(:user_token).compact + [user_token]).uniq.sort
-    all_user_tokens.index(user_token) + 1
+
+    # Lógica simples: se já existe um jogador, o próximo será jogador 2, senão será jogador 1
+    existing_tokens = players.pluck(:user_token).compact
+
+    if existing_tokens.include?(user_token)
+      # Se o token já existe mas não tem player_number, determinar baseado na posição
+      existing_tokens.sort.index(user_token) + 1
+    else
+      # Se é um novo token, será o próximo número disponível
+      existing_tokens.empty? ? 1 : 2
+    end
   end
 
   def default_player_name_for_number(player_number)
