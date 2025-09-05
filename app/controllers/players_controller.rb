@@ -32,19 +32,29 @@ class PlayersController < ApplicationController
 
   # PATCH/PUT /players/1
   def update
-    if @player.update(player_params.merge(ready: true))
-      game = @player.game
-      # Check if the other player is also ready
-      other_player_ready = game.players.where.not(id: @player.id).first&.ready?
-      if other_player_ready && game.status != "em_andamento"
-        game.update(status: "em_andamento")
-        GameSimulationJob.perform_later(game)
+    # Se o parâmetro ready estiver presente, marca como ready
+    if params[:player][:ready] == "true"
+      if @player.update(player_params.merge(ready: true))
+        game = @player.game
+        # Check if the other player is also ready
+        other_player_ready = game.players.where.not(id: @player.id).first&.ready?
+        if other_player_ready && game.status != "em_andamento"
+          game.update(status: "em_andamento")
+          GameSimulationJob.perform_later(game)
+        end
+        # The broadcast happens in the model, so the redirect is enough.
+        redirect_to game_path(game), notice: "Você está pronto! Aguardando oponente..."
+      else
+        # This path should ideally not be reached with the new UI
+        redirect_to game_path(@player.game), alert: "Não foi possível salvar suas escolhas."
       end
-      # The broadcast happens in the model, so the redirect is enough.
-      redirect_to game_path(game), notice: "Você está pronto! Aguardando oponente..."
     else
-      # This path should ideally not be reached with the new UI
-      redirect_to game_path(@player.game), alert: "Não foi possível salvar suas escolhas."
+      # Atualização normal (nome, tática, etc) sem marcar como ready
+      if @player.update(player_params)
+        redirect_to game_path(@player.game), notice: "Informações atualizadas com sucesso!"
+      else
+        redirect_to game_path(@player.game), alert: "Não foi possível salvar as alterações."
+      end
     end
   end
 
@@ -63,6 +73,6 @@ class PlayersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def player_params
-      params.require(:player).permit(:tactic)
+      params.require(:player).permit(:name, :tactic)
     end
 end

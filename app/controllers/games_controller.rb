@@ -24,7 +24,15 @@ class GamesController < ApplicationController
     @game = Game.new(status: "aguardando", score_team_a: 0, score_team_b: 0)
 
     if @game.save
-      player = @game.players.create(name: "Jogador 1", team_name: "Vermelho+Preto", tactic: "Balanceado", ready: false, user_token: session[:user_token])
+      player_number = @game.player_number_for_user(session[:user_token])
+      player = @game.players.create(
+        name: @game.default_player_name_for_number(player_number),
+        team_name: @game.default_team_name_for_number(player_number),
+        tactic: "Balanceado",
+        ready: false,
+        user_token: session[:user_token],
+        player_number: player_number
+      )
       session[:player_id] = player.id
       redirect_to @game, notice: "Partida criada com sucesso. Aguardando oponente."
     else
@@ -41,7 +49,15 @@ class GamesController < ApplicationController
       session[:player_id] = existing_player.id
       redirect_to @game, notice: "Você já está nesta partida!"
     elsif @game.players.count < 2
-      player = @game.players.create(name: "Jogador 2", team_name: "Branco+Preto", tactic: "Balanceado", ready: false, user_token: session[:user_token])
+      player_number = @game.player_number_for_user(session[:user_token])
+      player = @game.players.create(
+        name: @game.default_player_name_for_number(player_number),
+        team_name: @game.default_team_name_for_number(player_number),
+        tactic: "Balanceado",
+        ready: false,
+        user_token: session[:user_token],
+        player_number: player_number
+      )
       session[:player_id] = player.id
       @game.update(status: "sala_cheia") if @game.players.count == 2
       redirect_to @game, notice: "Você entrou na partida!"

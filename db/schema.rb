@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_05_150432) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_05_152927) do
   create_table "game_events", force: :cascade do |t|
     t.integer "minute"
     t.text "description"
@@ -42,6 +42,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_150432) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "user_token"
+    t.integer "player_number"
     t.index ["game_id"], name: "index_players_on_game_id"
     t.index ["user_token"], name: "index_players_on_user_token"
   end
