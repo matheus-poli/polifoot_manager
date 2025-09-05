@@ -1,9 +1,27 @@
+require "set"
+
 class GameSimulator
   TACTIC_MODIFIERS = {
     "Agressiva" => { attack: 15, defense: -10, vigor_decrease: 15 },
     "Balanceada" => { attack: 0, defense: 0, vigor_decrease: 10 },
     "Defensiva" => { attack: -10, defense: 15, vigor_decrease: 5 }
   }
+
+  PLAYER_NAMES = {
+    "goleiros" => [
+      "Thiagão", "Fernando", "Wigg", "Rodrigo", "Ronaldo", "Daniel"
+    ],
+    "zagueiros" => [
+      "Coutinho", "Beto", "Paulo", "Marcola", "Pablo Escobar", "Yago Pikachu",
+      "Arnaldo Antunes", "Luiza", "Andrey", "Geraldo Alckmin", "Junior Baiano"
+    ],
+    "meias" => [
+      "Perdigão", "Larririo", "Briano", "Daniel Finance", "Rosi", "Selton Mello", "Zampio"
+    ],
+    "atacantes" => [
+      "Renan", "João Pedro", "Riul", "Leandro", "Rheceba", "Nelson", "Matheus Poli"
+    ]
+  }.freeze
 
   EVENTS = {
     midfield: [
@@ -87,6 +105,8 @@ class GameSimulator
   def initialize(game)
     @game = game
     @players = @game.players.order(:created_at)
+    @used_names = Set.new
+
     @teams = {
       @players.first.id => { name: @players.first.team_name, tactic: @players.first.tactic, players: build_team_players, manager: @players.first, score: -> { @game.score_team_a } },
       @players.second.id => { name: @players.second.team_name, tactic: @players.second.tactic, players: build_team_players, manager: @players.second, score: -> { @game.score_team_b } }
@@ -247,7 +267,16 @@ class GameSimulator
 
     event_text.gsub!("[Time]", attacking_team[:name])
     event_text.gsub!("[Adversário]", defending_team[:name])
-    event_text.gsub!("[Jogador]", attacker_player[:name]) if attacker_player
+
+    # Para eventos aleatórios, selecionar um jogador aleatório se não há attacker_player específico
+    if attacker_player
+      event_text.gsub!("[Jogador]", attacker_player[:name])
+    elsif category == :random && event_text.include?("[Jogador]")
+      # Selecionar um jogador aleatório de qualquer posição do time atacante
+      random_player = attacking_team[:players].sample
+      event_text.gsub!("[Jogador]", random_player[:name])
+    end
+
     event_text.gsub!("[Defensor]", defender_player[:name]) if defender_player
     event_text.gsub!("[Jogador A]", attacking_team[:players].sample[:name])
     event_text.gsub!("[Jogador B]", attacking_team[:players].sample[:name])
@@ -261,19 +290,38 @@ class GameSimulator
     GameEvent.create(game: @game, minute: minute, description: description)
   end
 
+  def get_unique_name(position_category)
+    available_names = PLAYER_NAMES[position_category] - @used_names.to_a
+
+    # Se não há nomes disponíveis nesta categoria, usar qualquer nome disponível
+    if available_names.empty?
+      all_names = PLAYER_NAMES.values.flatten
+      available_names = all_names - @used_names.to_a
+    end
+
+    # Se ainda assim não há nomes, usar um nome genérico (fallback)
+    if available_names.empty?
+      return "Jogador #{@used_names.size + 1}"
+    end
+
+    selected_name = available_names.sample
+    @used_names << selected_name
+    selected_name
+  end
+
   def build_team_players
     [
-      { name: "Goleiro", overall: 65, vigor: 100, position: "Goleiro" },
-      { name: "Lateral Direito", overall: 62, vigor: 100, position: "Lateral" },
-      { name: "Lateral Esquerdo", overall: 62, vigor: 100, position: "Lateral" },
-      { name: "Zagueiro 1", overall: 78, vigor: 100, position: "Zagueiro" },
-      { name: "Zagueiro 2", overall: 45, vigor: 100, position: "Zagueiro" },
-      { name: "Meia 1", overall: 68, vigor: 100, position: "Meia" },
-      { name: "Meia 2", overall: 68, vigor: 100, position: "Meia" },
-      { name: "Meia 3", overall: 68, vigor: 100, position: "Meia" },
-      { name: "Meia 4", overall: 68, vigor: 100, position: "Meia" },
-      { name: "Atacante 1", overall: 80, vigor: 100, position: "Atacante" },
-      { name: "Atacante 2", overall: 48, vigor: 100, position: "Atacante" }
+      { name: get_unique_name("goleiros"), overall: 65, vigor: 100, position: "Goleiro" },
+      { name: get_unique_name("zagueiros"), overall: 62, vigor: 100, position: "Lateral" },
+      { name: get_unique_name("zagueiros"), overall: 62, vigor: 100, position: "Lateral" },
+      { name: get_unique_name("zagueiros"), overall: 78, vigor: 100, position: "Zagueiro" },
+      { name: get_unique_name("zagueiros"), overall: 45, vigor: 100, position: "Zagueiro" },
+      { name: get_unique_name("meias"), overall: 68, vigor: 100, position: "Meia" },
+      { name: get_unique_name("meias"), overall: 68, vigor: 100, position: "Meia" },
+      { name: get_unique_name("meias"), overall: 68, vigor: 100, position: "Meia" },
+      { name: get_unique_name("meias"), overall: 68, vigor: 100, position: "Meia" },
+      { name: get_unique_name("atacantes"), overall: 80, vigor: 100, position: "Atacante" },
+      { name: get_unique_name("atacantes"), overall: 48, vigor: 100, position: "Atacante" }
     ]
   end
 end
