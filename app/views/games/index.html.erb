@@ -1,0 +1,22 @@
+<% content_for :title, "Lobby" %>
+<%= turbo_stream_from "games_lobby" %>
+
+<div class="w-full max-w-4xl mx-auto">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="font-bold text-4xl">Lobby de Partidas</h1>
+    <%= button_to "Criar Nova Partida", games_path, method: :post, class: "rounded-md px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  </div>
+
+  <div id="games" class="min-w-full bg-white rounded-lg shadow">
+    <div class="divide-y divide-gray-200">
+      <%= render @games %>
+    </div>
+    <% if @games.none? %>
+      <p id="no_games_message" class="text-center py-10 text-gray-500">Nenhuma partida aguardando jogadores. Crie a primeira!</p>
+    <% end %>
+  </div>
+</div>

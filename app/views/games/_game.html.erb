@@ -1,0 +1,13 @@
+<div id="<%= dom_id game %>" class="p-4 flex justify-between items-center">
+  <div>
+    <p class="font-semibold text-lg">Partida #<%= game.id %></p>
+    <p class="text-sm text-gray-600">Jogadores: <%= game.players.count %>/2 | Status: <span class="font-medium"><%= game.status %></span></p>
+  </div>
+  <div class="space-x-2 flex items-center">
+    <% if game.players.count < 2 %>
+      <%= button_to "Entrar", join_game_path(game), method: :post, class: "rounded-md px-3.5 py-2.5 bg-green-600 hover:bg-green-500 text-white font-medium" %>
+    <% else %>
+      <span class="rounded-md px-3.5 py-2.5 bg-gray-300 text-gray-500 font-medium cursor-not-allowed">Sala Cheia</span>
+    <% end %>
+    </div>
+</div>

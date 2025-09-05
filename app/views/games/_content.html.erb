@@ -1,0 +1,25 @@
+<% if game.status == "em_andamento" %>
+  <%# --- TELA DA PARTIDA EM ANDAMENTO --- %>
+  <div id="match_screen">
+    <h1 class="font-bold text-4xl text-center mb-4">Partida #<%= game.id %></h1>
+    
+    <%# Placar %>
+    <%= render 'games/scoreboard', game: game %>
+
+    <%# Log de Eventos %>
+    <div id="game_events" class="h-96 overflow-y-scroll bg-white p-4 border rounded-lg shadow-inner">
+      <%= render game.game_events.order(:minute) %>
+    </div>
+  </div>
+
+<% else %>
+  <%# --- TELA DE PREPARAÇÃO (SALA) --- %>
+  <div id="lobby_screen">
+    <h1 class="font-bold text-4xl text-center mb-4">Sala da Partida #<%= game.id %></h1>
+    <p class="text-center text-xl text-gray-600 mb-8">Status: <span class="font-semibold"><%= game.status %></span></p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <%= render game.players.order(:created_at) %>
+    </div>
+  </div>
+<% end %>

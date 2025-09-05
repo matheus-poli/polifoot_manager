@@ -1,0 +1,5 @@
+<div id="<%= dom_id(game, :scoreboard) %>" class="my-6 p-4 bg-gray-800 text-white rounded-lg shadow-lg flex justify-around items-center">
+  <span class="text-2xl font-bold"><%= game.players.first.team_name %></span>
+  <span class="text-4xl font-mono"><%= game.score_team_a %> x <%= game.score_team_b %></span>
+  <span class="text-2xl font-bold"><%= game.players.second.team_name %></span>
+</div>
