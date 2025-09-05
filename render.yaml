@@ -34,7 +34,7 @@ services:
   - type: worker
     name: polifoot-manager-worker
     runtime: ruby
-    plan: free
+    plan: starter
     buildCommand: "bundle install"
     startCommand: "bundle exec rails solid_queue:start"
     envVars:
